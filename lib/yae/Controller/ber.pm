@@ -1,0 +1,351 @@
+package yae::Controller::ber;
+
+use parent qw( yae::Controler::base );
+
+=head1 new
+    # in a single act makes a ber
+    my $query = yae::Controller::ber->new(
+        element => (
+            id => "/my_sound1.wav",
+            chanell_02 => "/my_sound2.ogg"
+        ), 
+        loud  => (
+            channel_01 => 80,
+            channel_02 => 75
+        ),
+        times => (
+            chanell_01 => 0,      # start
+            chanell_01 => 1256,   # miliseconds
+            chanell_02 => 2345
+        ),
+        fade  => (
+            chanell_02 => [2345, 3456, -20]
+        )
+    );
+=cut
+sub new {
+ my $self = PARENT->new();
+ $self->{rtype} = 'BER';
+ $self->{model} = yae::Model;
+ return $self;
+}
+
+sub element {
+  my $self = shift;
+  my $id = shift;
+  my $detail = shift;
+
+  my $c = $self->{c};
+
+  my $model = $self->{model};
+  my $class = $self->{class};
+  my $element = undef;
+
+  if($id){
+    $element = $c->model($model.'::'.$class)->find({id => $id});
+  }
+  else{
+    $element = $c->model($model.'::'.$class)->new($c->stash->{defaults});
+  }
+
+  if($element){
+    #detail elements are actually collections
+    if($detail){
+      return $self->collection($detail,$element);
+    }
+    else{
+      $c->stash->{element} = $self->mk_element_entity($element);
+      $c->stash->{element_meta} = $self->mk_element_meta($element);
+    }
+    my $entity = {
+      element => $c->stash->{element},
+      element_atts => $c->stash->{element_atts},
+      element_meta => $c->stash->{element_meta},
+    };
+
+    return $entity;
+  }
+  else{
+    $c->stash->{element} = undef;
+    $c->stash->{element_meta} = undef;
+    return undef;
+
+  }
+
+
+
+}
+
+#TODO: revise the term element_detail... this functionality is to get
+#the belongs to collection (I think)
+sub collection {
+  my $self = shift;
+  my $element_detail = shift @_ || undef;
+  my $element = shift @_ || undef;
+  my $c = $self->{c};
+
+  # params and defaults
+  my $page     = $c->req->param('page')     || 1;
+  my $elements = $c->req->param('elements') || 10;
+  my $filter   = $c->req->param('filter')   || undef;
+  my $order_by = $c->req->param('orderby')  || 'id';
+
+  my $collection = undef;
+
+  my $extras = { };
+  unless($elements eq 'all'){
+    $extras->{page} = $page;
+    $extras->{rows} = $elements;
+  }
+  $extras->{order_by} = $order_by;
+
+  # text filters
+  my $txtf = undef;
+  if($filter){
+    $txtf = [ ];
+    $filter = lc($filter);
+    foreach(@{$c->stash->{filter_atts}}){
+      push @$txtf, "lower($_)" => {like => "%$filter%"};
+    }
+  }
+
+  my $where = undef;
+
+  # extra where and text filters
+  if($txtf && $c->stash->{extra_where}){
+    $where = {
+      -and => [
+        $txtf,
+        $c->stash->{extra_where},
+      ]
+    };
+  }
+  elsif($txtf){
+    $where = {
+      $txtf,
+    };
+  }
+  elsif($c->stash->{extra_where}){
+    $where = {
+      %{$c->stash->{extra_where}},
+    };
+  }
+
+
+  my $model = $c->stash->{model};
+  my $class = $c->stash->{class};
+
+  if($element_detail){
+    eval {
+      $collection = $element->$element_detail($where,$extras);
+    };
+  }
+  else{
+    eval {
+      $collection = $c->model($model.'::'.$class)->search($where,$extras);
+    };
+  }
+
+
+  #TODO: Errors
+  # bad request
+  #if($@){
+  #  my $errstr = $c->config->{dbix_errors}?"$@":"DB ERROR";
+  #  my $msg = $c->localize('Could not retrieve collection:').$errstr;
+  #  $c->stash->{msg} = $msg;
+  #  $self->status_bad_request(
+  #    $c,
+  #    message => $msg,
+  #  );
+  #  return;
+  #}
+
+  if($collection){
+    $c->stash->{collection} = [$collection->all];
+    $c->stash->{pager}    = $extras->{page}?$collection->pager:undef;
+    $c->stash->{elements} = $elements;
+    $c->stash->{filter}   = $filter;
+    $c->stash->{order_by} = $order_by;
+
+    my $entity = $self->mk_collection_entity($collection);
+    return $entity;
+  }
+  else{
+    return undef;
+  }
+
+}
+
+
+sub update {
+  my $self = shift;
+  my $id = shift;
+  my $c = $self->{c};
+
+  my $model = $c->stash->{model};
+  my $class = $c->stash->{class};
+
+  my $cpars = $self->get_cpars();
+
+  my $element = $c->model($model.'::'.$class)->find({id => $id});
+
+  if($element){
+    #update the new values
+    map {$element->$_($cpars->{$_})} keys %$cpars;
+
+    eval{$element->update};
+
+    unless($@){
+      $c->stash->{element} = $self->mk_element_entity($element);
+      $c->stash->{element_meta} = $self->mk_element_meta($element);
+
+      $c->stash->{updated_element} = 1;
+
+      my $entity = {
+        element => $c->stash->{element},
+        #FIXME: see if element atts makes sense here
+        element_atts => $c->stash->{element_atts},
+        element_meta => $c->stash->{element_meta},
+      };
+      return $entity;
+
+    }
+    else{
+      my $errstr = $c->config->{dbix_errors}?"$@":"DB ERROR";
+      my $msg = $c->localize('Could not update element:').$errstr;
+      $c->stash->{msg} = $msg;
+      return undef;
+    }
+
+
+  }
+  #FIXME: shouldn't there be a message like above???
+  #       look at $self->exception in bpr.pm!
+  else{
+    $c->stash->{element} = undef;
+    $c->stash->{element_meta} = undef;
+    return undef;
+  }
+
+}
+
+# fetches request parameters that match the element's attributes
+sub get_cpars {
+  my $self = shift;
+  my $c = $self->{c};
+  my $model = $c->stash->{model};
+  my $class = $c->stash->{class};
+
+  my $cpars = { };
+  foreach($c->model($model)->class($class)->columns){
+    $cpars->{$_} = $c->req->param($_) if $c->req->param($_);
+    # assume unchecked booleans to be false
+    if($c->model($model)->class($class)->column_info($_)->{data_type} eq 'boolean'){
+      $cpars->{$_} = 0 unless $cpars->{$_};
+    }
+  }
+  return $cpars;
+}
+
+sub mk_collection_entity {
+  my $self = shift;
+  my $collection = shift;
+  my $c = $self->{c};
+  my $pager = $c->stash->{pager};
+  my $ilist = [ ];
+
+  foreach($collection->all){
+    push @$ilist, $self->mk_element_entity($_)
+  }
+
+  #FIXME: the ternary below is a quick fix for empty lists
+  my $xlist = {
+    collection => $ilist,
+    element_atts => $c->stash->{element_atts},
+    element_meta => $collection->first?$self->mk_element_meta($collection->first):undef,
+    entries => undef,
+    page => undef,
+    pages => undef,
+    next => undef,
+    previous => undef,
+  };
+
+  if($pager){
+    $xlist->{entries} = $pager->total_entries,
+    $xlist->{page} = $pager->current_page,
+    $xlist->{pages} = $pager->last_page,
+    $xlist->{next} = $pager->next_page,
+    $xlist->{previous} = $pager->previous_page,
+  }
+
+  return $xlist;
+}
+
+sub mk_element_entity {
+  my $self = shift;
+  my $element = shift;
+  my $c = $self->{c};
+  my $e = { };
+  foreach(@{$c->stash->{element_atts}}){
+    my $att = $_->{att};
+    # plain attribute
+    unless(my $link = $_->{link}){
+      $e->{$att} = $element->$att;
+    }
+    # linked resource
+    else{
+      my $view = $_->{link}->{view};
+      my $link_ref = {
+        id => defined $element->$att?$element->$att->id:undef,
+        view_val => defined $element->$att?$element->$att->$view:undef,
+      };
+      $e->{$att} = $link_ref;
+    }
+  }
+  return $e;
+}
+
+sub mk_element_meta {
+  my $self = shift;
+  my $element = shift;
+  my $c = $self->{c};
+  my $ad = { };
+  foreach(@{$c->stash->{element_atts}}){
+    my $an = $_->{att};
+
+    my $ai = undef;
+    eval {
+      $ai = $element->column_info($an);
+    };
+    #FUTURE: find better solution for proxy columns?
+    unless($@ =~ /No such column/){
+      #TODO: exception
+      warn "TODO: formalize exception in BER: $@";
+    }
+    else{
+      # only useful meta for ui
+      foreach my $k (qw(data_type default_value is_nullable size)){
+        $ad->{$an}->{$k} = $_->{$k}?$_->{$k}:$ai->{$k};
+      }
+    }
+  }
+  return $ad;
+}
+
+#TODO: this is for linked fields
+#FUTURE: ber should have no bneed for this, probably remove in 
+# the next few versions
+
+sub mk_element_relations {
+  my ( $element, $c ) = @_;
+  my $er = ( );
+  if(defined $c->stash->{relations}){
+    foreach my $rel (@{$c->stash->{relations}}){
+      push @$er, $rel;
+    }
+  }
+  return $er;
+}
+
+
+1;

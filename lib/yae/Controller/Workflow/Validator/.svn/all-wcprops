@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svnroot/p2ee/!svn/ver/30/lib/p2ee/Controller/Workflow/Validator
+END
+generic.pm
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svnroot/p2ee/!svn/ver/30/lib/p2ee/Controller/Workflow/Validator/generic.pm
+END
+chkdata.pm
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svnroot/p2ee/!svn/ver/30/lib/p2ee/Controller/Workflow/Validator/chkdata.pm
+END

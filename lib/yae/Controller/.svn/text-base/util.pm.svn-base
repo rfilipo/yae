@@ -1,0 +1,15 @@
+package p2ee::Controller::util;
+
+sub new {
+  my $package = shift;
+  my $c = shift;
+  my $self = { };
+  $self->{c} = $c;
+  bless($self,$package);
+  return $self;
+}
+
+
+
+
+1;
