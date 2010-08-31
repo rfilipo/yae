@@ -1850,7 +1850,7 @@
 	<wx/wx.h>
 	"GUIFrame.h"
 
-1282412762 /home/filipo/projetos/TIT/prototipos/0.1/yae/yae/GUIFrame.h
+1283216336 /home/filipo/projetos/TIT/prototipos/0.1/yae/yae/GUIFrame.h
 	<wx/string.h>
 	<wx/bitmap.h>
 	<wx/image.h>
@@ -1861,12 +1861,14 @@
 	<wx/colour.h>
 	<wx/settings.h>
 	<wx/statusbr.h>
-	<wx/treectrl.h>
+	<wx/calctrl.h>
+	<wx/html/htmlwin.h>
 	<wx/sizer.h>
+	<wx/panel.h>
+	<wx/treectrl.h>
 	<wx/scrolwin.h>
 	<wx/grid.h>
 	<wx/splitter.h>
-	<wx/panel.h>
 	<wx/textctrl.h>
 	<wx/notebook.h>
 	<wx/frame.h>
@@ -1898,4 +1900,125 @@
 	<limits.h>
 	<note.h>
 	<locale.h>
+
+1238939809 /usr/include/wx-2.8/wx/calctrl.h
+	"wx/defs.h"
+	"wx/dateevt.h"
+	"wx/colour.h"
+	"wx/font.h"
+	"wx/generic/calctrl.h"
+
+1238939809 /usr/include/wx-2.8/wx/dateevt.h
+	"wx/event.h"
+	"wx/datetime.h"
+	"wx/window.h"
+
+1238939809 /usr/include/wx-2.8/wx/generic/calctrl.h
+	"wx/control.h"
+	"wx/dcclient.h"
+
+1238939810 /usr/include/wx-2.8/wx/html/htmlwin.h
+	"wx/defs.h"
+	"wx/window.h"
+	"wx/scrolwin.h"
+	"wx/config.h"
+	"wx/stopwatch.h"
+	"wx/html/winpars.h"
+	"wx/html/htmlcell.h"
+	"wx/filesys.h"
+	"wx/html/htmlfilt.h"
+	"wx/filename.h"
+	"wx/bitmap.h"
+
+1238939807 /usr/include/wx-2.8/wx/config.h
+	"wx/defs.h"
+	"wx/confbase.h"
+	"wx/msw/regconf.h"
+	"wx/msw/iniconf.h"
+	"wx/palmos/prefconf.h"
+	"wx/fileconf.h"
+
+1238939807 /usr/include/wx-2.8/wx/confbase.h
+	"wx/defs.h"
+	"wx/string.h"
+	"wx/string.h"
+
+1238939807 /usr/include/wx-2.8/wx/fileconf.h
+	"wx/defs.h"
+	"wx/textfile.h"
+	"wx/string.h"
+	"wx/confbase.h"
+
+1238939808 /usr/include/wx-2.8/wx/textfile.h
+	"wx/defs.h"
+	"wx/textbuf.h"
+	"wx/file.h"
+
+1238939808 /usr/include/wx-2.8/wx/textbuf.h
+	"wx/defs.h"
+	"wx/arrstr.h"
+	"wx/convauto.h"
+	"wx/string.h"
+	"wx/dynarray.h"
+
+1238939807 /usr/include/wx-2.8/wx/convauto.h
+	"wx/strconv.h"
+
+1238939807 /usr/include/wx-2.8/wx/file.h
+	"wx/defs.h"
+	"wx/string.h"
+	"wx/filefn.h"
+	"wx/strconv.h"
+
+1238939810 /usr/include/wx-2.8/wx/html/winpars.h
+	"wx/defs.h"
+	"wx/module.h"
+	"wx/font.h"
+	"wx/html/htmlpars.h"
+	"wx/html/htmlcell.h"
+	"wx/encconv.h"
+
+1238939810 /usr/include/wx-2.8/wx/html/htmlpars.h
+	"wx/defs.h"
+	"wx/html/htmltag.h"
+	"wx/filesys.h"
+	"wx/hash.h"
+	"wx/fontenc.h"
+
+1238939810 /usr/include/wx-2.8/wx/html/htmltag.h
+	"wx/defs.h"
+	"wx/object.h"
+	"wx/arrstr.h"
+
+1238939807 /usr/include/wx-2.8/wx/filesys.h
+	"wx/defs.h"
+	"wx/stream.h"
+	"wx/datetime.h"
+	"wx/filename.h"
+	"wx/hashmap.h"
+
+1238939807 /usr/include/wx-2.8/wx/filename.h
+	"wx/arrstr.h"
+	"wx/filefn.h"
+	"wx/datetime.h"
+	"wx/intl.h"
+
+1238939810 /usr/include/wx-2.8/wx/html/htmlcell.h
+	"wx/defs.h"
+	"wx/html/htmltag.h"
+	"wx/html/htmldefs.h"
+	"wx/window.h"
+
+1238939810 /usr/include/wx-2.8/wx/html/htmldefs.h
+	"wx/defs.h"
+
+1238939807 /usr/include/wx-2.8/wx/encconv.h
+	"wx/defs.h"
+	"wx/object.h"
+	"wx/fontenc.h"
+	"wx/dynarray.h"
+
+1238939810 /usr/include/wx-2.8/wx/html/htmlfilt.h
+	"wx/defs.h"
+	"wx/filesys.h"
 

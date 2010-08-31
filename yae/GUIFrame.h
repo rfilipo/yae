@@ -18,12 +18,14 @@
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/statusbr.h>
-#include <wx/treectrl.h>
+#include <wx/calctrl.h>
+#include <wx/html/htmlwin.h>
 #include <wx/sizer.h>
+#include <wx/panel.h>
+#include <wx/treectrl.h>
 #include <wx/scrolwin.h>
 #include <wx/grid.h>
 #include <wx/splitter.h>
-#include <wx/panel.h>
 #include <wx/textctrl.h>
 #include <wx/notebook.h>
 #include <wx/frame.h>
@@ -46,6 +48,11 @@ class GUIFrame : public wxFrame
 		wxMenu* helpMenu;
 		wxStatusBar* statusBar;
 		wxNotebook* m_notebook1;
+		wxPanel* m_panel3;
+		wxPanel* m_panel51;
+		wxCalendarCtrl* m_calendar1;
+		wxHtmlWindow* m_htmlWin1;
+		wxHtmlWindow* m_htmlWin4;
 		wxPanel* m_panel1;
 		wxSplitterWindow* m_splitter4;
 		wxScrolledWindow* m_scrolledWindow1;
@@ -54,8 +61,9 @@ class GUIFrame : public wxFrame
 		wxGrid* m_grid1;
 		wxPanel* m_panel2;
 		wxTextCtrl* m_cliente_name;
-		wxPanel* m_panel3;
 		wxPanel* m_panel5;
+		wxPanel* m_panel6;
+		wxPanel* m_panel7;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnClose( wxCloseEvent& event ){ event.Skip(); }
@@ -67,7 +75,7 @@ class GUIFrame : public wxFrame
 		
 	
 	public:
-		GUIFrame( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("YAE"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 481,466 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		GUIFrame( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("YAE"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 800,600 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		~GUIFrame();
 		void m_splitter4OnIdle( wxIdleEvent& )
 		{

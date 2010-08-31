@@ -45,6 +45,32 @@ GUIFrame::GUIFrame( wxWindow* parent, wxWindowID id, const wxString& title, cons
 	bSizer1 = new wxBoxSizer( wxVERTICAL );
 	
 	m_notebook1 = new wxNotebook( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	m_panel3 = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer7;
+	bSizer7 = new wxBoxSizer( wxVERTICAL );
+	
+	m_panel51 = new wxPanel( m_panel3, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer8;
+	bSizer8 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_calendar1 = new wxCalendarCtrl( m_panel51, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxCAL_SHOW_HOLIDAYS );
+	bSizer8->Add( m_calendar1, 0, wxALL, 5 );
+	
+	m_htmlWin1 = new wxHtmlWindow( m_panel51, wxID_ANY, wxDefaultPosition, wxSize( 500,168 ), wxHW_SCROLLBAR_AUTO );
+	bSizer8->Add( m_htmlWin1, 0, wxALL, 5 );
+	
+	m_panel51->SetSizer( bSizer8 );
+	m_panel51->Layout();
+	bSizer8->Fit( m_panel51 );
+	bSizer7->Add( m_panel51, 1, wxEXPAND | wxALL, 5 );
+	
+	m_htmlWin4 = new wxHtmlWindow( m_panel3, wxID_ANY, wxDefaultPosition, wxSize( 790,290 ), wxHW_SCROLLBAR_AUTO );
+	bSizer7->Add( m_htmlWin4, 0, wxALL, 5 );
+	
+	m_panel3->SetSizer( bSizer7 );
+	m_panel3->Layout();
+	bSizer7->Fit( m_panel3 );
+	m_notebook1->AddPage( m_panel3, wxT("Fornecedores"), true );
 	m_panel1 = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer3;
 	bSizer3 = new wxBoxSizer( wxVERTICAL );
@@ -107,7 +133,7 @@ GUIFrame::GUIFrame( wxWindow* parent, wxWindowID id, const wxString& title, cons
 	m_panel1->SetSizer( bSizer3 );
 	m_panel1->Layout();
 	bSizer3->Fit( m_panel1 );
-	m_notebook1->AddPage( m_panel1, wxT("Contabil"), true );
+	m_notebook1->AddPage( m_panel1, wxT("Contabil"), false );
 	m_panel2 = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer51;
 	bSizer51 = new wxBoxSizer( wxVERTICAL );
@@ -119,10 +145,12 @@ GUIFrame::GUIFrame( wxWindow* parent, wxWindowID id, const wxString& title, cons
 	m_panel2->Layout();
 	bSizer51->Fit( m_panel2 );
 	m_notebook1->AddPage( m_panel2, wxT("Clientes"), false );
-	m_panel3 = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_notebook1->AddPage( m_panel3, wxT("Fornecedores"), false );
 	m_panel5 = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	m_notebook1->AddPage( m_panel5, wxT("Produtos"), false );
+	m_panel6 = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_notebook1->AddPage( m_panel6, wxT("a page"), false );
+	m_panel7 = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_notebook1->AddPage( m_panel7, wxT("a page"), false );
 	
 	bSizer1->Add( m_notebook1, 1, wxEXPAND | wxALL, 5 );
 	
