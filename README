@@ -3,9 +3,20 @@ yae 0.01_01
 Isto é um trabalho inacabado.
 Yae (Yet Another Erp) é uma integração entre WxWidgets e Perl usando a ide Code::Blocks e o rad WxFormBuilder.
 
-Abra o arquivo yae/yae.cbp no Code::Blocks.
+SINOPSE
 
-:)  Boa sorte!
+A primeira tela deve apresenta um caledário, um relógio e diversas 
+funções e informações relacionadas ao negócio. Ao selecionar uma data 
+será apresentado:
+
+* mapa de quartos/mesas reservados
+* cardápio do dia
+* atividades agendadas para o dia
+* pagamentos realizados
+* faturamento do dia
+
+Ao lado do calendário ficará a tela do TAnoBrasil.com.br 
+As demais telas: Checkin/Comanda, Checkout/Fechar, funcionários/escala/pagamentos, fornecedores/estoque, clientes/crm.
 
 INSTALLATION
 
